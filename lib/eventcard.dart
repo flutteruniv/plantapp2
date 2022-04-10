@@ -21,11 +21,14 @@ class EventCard extends StatelessWidget {
         width: 350,
         child: Column(
           children: [
-            Image.asset("$image"),
+            Image.asset(
+              "$image",
+              fit: BoxFit.cover,
+            ),
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.blueGrey,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),

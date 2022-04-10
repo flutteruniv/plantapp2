@@ -47,17 +47,13 @@ class FirstPage extends StatelessWidget {
                     },
                   ),
                   EventCard(
-                      image: "assets/images/image1.jpg",
+                      image: "assets/images/image2.jpg",
                       title: events[1].title,
                       date: events[1].date),
                   EventCard(
-                      image: "assets/images/image1.jpg",
-                      title: "BC ONE",
-                      date: "2022/4/5"),
-                  EventCard(
-                      image: "assets/images/image1.jpg",
-                      title: "BC ONE",
-                      date: "2022/4/5"),
+                      image: "assets/images/image3.png",
+                      title: "Juste Debout Tokyo",
+                      date: "2022/10/24"),
                 ],
               ),
             );
