@@ -7,6 +7,7 @@ import 'dart:io';
 class AddEventModel extends ChangeNotifier {
   String? title;
   String? date;
+  String? detail;
   File? imageFile;
   bool isLoading = false;
 
@@ -31,6 +32,9 @@ class AddEventModel extends ChangeNotifier {
     if (date == null || date!.isEmpty) {
       throw '日程が空です。';
     }
+    if (detail == null || detail!.isEmpty) {
+      throw '詳細が空です。';
+    }
 
     final doc = FirebaseFirestore.instance.collection('event').doc();
 
@@ -48,6 +52,7 @@ class AddEventModel extends ChangeNotifier {
     await doc.set({
       'title': title,
       'date': date,
+      'detail': detail,
       'imgURL': imgURL,
     });
   }

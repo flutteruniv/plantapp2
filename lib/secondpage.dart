@@ -51,6 +51,16 @@ class SecondPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'イベント詳細',
+                    ),
+                    onChanged: (text) {
+                      model.detail = text;
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   TextButton(
                     style: ButtonStyle(
                       backgroundColor:

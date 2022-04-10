@@ -41,7 +41,7 @@ class FirstPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EventDetail(),
+                            builder: (context) => EventDetail(i),
                           ),
                         );
                       },
