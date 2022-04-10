@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EventCard extends StatelessWidget {
-  EventCard({this.image, this.title, this.date, this.press});
-  final String? image, title, date;
+  EventCard({this.imgURL, this.title, this.date, this.press});
+  final String? imgURL, title, date;
   final void Function()? press;
 
   // "assets/images/image1.jpg"
@@ -21,8 +21,8 @@ class EventCard extends StatelessWidget {
         width: 350,
         child: Column(
           children: [
-            Image.asset(
-              "$image",
+            Image.network(
+              imgURL!,
               fit: BoxFit.cover,
             ),
             Container(

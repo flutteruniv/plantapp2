@@ -28,14 +28,13 @@ class FirstPage extends StatelessWidget {
         body: Center(
           child: Consumer<MainModel>(builder: (context, model, child) {
             final events = model.events;
-            int eventNum = 0;
 
             return SingleChildScrollView(
               child: Column(
                 children: [
                   for (int i = 0; i < 5; i++) ...{
                     EventCard(
-                      image: "assets/images/image$i.jpg",
+                      imgURL: events[i].imgURL,
                       title: events[i].title,
                       date: events[i].date,
                       press: () {
