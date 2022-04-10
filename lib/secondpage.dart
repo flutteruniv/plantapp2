@@ -13,58 +13,86 @@ class SecondPage extends StatelessWidget {
         ),
         body: Center(
             child: Consumer<AddEventModel>(builder: (context, model, child) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          return Stack(
             children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'イベント名',
-                ),
-                onChanged: (text) {
-                  model.title = text;
-                },
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: SizedBox(
+                      width: 200,
+                      height: 160,
+                      child: model.imageFile != null
+                          ? Image.file(model.imageFile!)
+                          : Container(color: Colors.grey),
+                    ),
+                    onTap: () async {
+                      await model.pickImage();
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'イベント名',
+                    ),
+                    onChanged: (text) {
+                      model.title = text;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '日程',
+                    ),
+                    onChanged: (text) {
+                      model.date = text;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.teal),
+                    ),
+                    //エラーキャッチ
+                    onPressed: () async {
+                      try {
+                        model.startLoading();
+                        await model.addEvent();
+                        final snackBar = SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('イベントを追加しました。'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } catch (e) {
+                        final snackBar = SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                            e.toString(),
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } finally {
+                        model.endLoading();
+                      }
+                    },
+                    child: Text(
+                      "イベント作成",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '日程',
-                ),
-                onChanged: (text) {
-                  model.date = text;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.teal),
-                ),
-                //エラーキャッチ
-                onPressed: () async {
-                  try {
-                    await model.addEvent();
-                    final snackBar = SnackBar(
-                      backgroundColor: Colors.green,
-                      content: Text('イベントを追加しました。'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } catch (e) {
-                    final snackBar = SnackBar(
-                      backgroundColor: Colors.red,
-                      content: Text(
-                        e.toString(),
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
-                child: Text(
-                  "エントリーする",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              //isLoadingがtrueの時だけ動く
+              if (model.isLoading)
+                Container(
+                  color: Colors.black54,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
             ],
           );
         })),
