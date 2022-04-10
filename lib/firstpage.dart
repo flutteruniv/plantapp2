@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'main_model.dart';
-import 'nextpage.dart';
+import 'event_detail.dart';
 import 'eventcard.dart';
 
 class FirstPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class FirstPage extends StatelessWidget {
       create: (_) => MainModel()..fetchEvents(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('テスト'),
+          title: Text('イベント一覧'),
         ),
         body: Center(
           child: Consumer<MainModel>(builder: (context, model, child) {
@@ -41,7 +41,7 @@ class FirstPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NextPage(),
+                          builder: (context) => EventDetail(),
                         ),
                       );
                     },

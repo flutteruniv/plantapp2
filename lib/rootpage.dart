@@ -29,9 +29,6 @@ class RootPage extends StatelessWidget {
       create: (_) => MainModel()..fetchEvents(),
       child: Consumer<MainModel>(builder: (context, model, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('テスト'),
-          ),
           body: _pageList[model.currentIndex],
           bottomNavigationBar: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[

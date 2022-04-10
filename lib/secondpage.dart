@@ -3,13 +3,29 @@ import 'package:flutter/material.dart';
 class SecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: const Center(
-        child: const Icon(
-          Icons.fastfood,
-          size: 200,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('入力フォーム'),
       ),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'ボーダーあり',
+            ),
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: '日程',
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
