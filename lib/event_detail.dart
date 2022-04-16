@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plantapp2/entrypage.dart';
 import 'package:provider/provider.dart';
 import 'main_model.dart';
-import 'event_detail.dart';
-import 'eventcard.dart';
 
 class EventDetail extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
@@ -53,7 +52,12 @@ class EventDetail extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.teal),
                 ),
-                onPressed: null,
+                onPressed: () => {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return EntryPage();
+                  }))
+                },
                 child: Text(
                   "エントリーする",
                   style: TextStyle(color: Colors.white),
