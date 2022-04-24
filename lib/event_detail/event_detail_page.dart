@@ -45,8 +45,11 @@ class EventDetail extends StatelessWidget {
                   events[eventNum].date.toString(),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  events[eventNum].detail.toString(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    events[eventNum].detail.toString(),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 TextButton(

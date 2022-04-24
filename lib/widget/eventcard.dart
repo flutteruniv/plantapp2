@@ -12,18 +12,19 @@ class EventCard extends StatelessWidget {
       onTap: press,
       child: Container(
         padding: EdgeInsets.only(top: 30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(36),
-            topRight: Radius.circular(36),
-          ),
-        ),
+        decoration: BoxDecoration(),
         width: 350,
         child: Column(
           children: [
-            Image.network(
-              imgURL!,
-              fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(36),
+                topRight: Radius.circular(36),
+              ),
+              child: Image.network(
+                imgURL!,
+                fit: BoxFit.cover,
+              ),
             ),
             Container(
               width: double.infinity,

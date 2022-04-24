@@ -44,7 +44,9 @@ class RootPage extends StatelessWidget {
               currentIndex: currentIndex,
               selectedItemColor: Colors.amber[800],
               onTap: (index) {
+                print(index);
                 model.currentIndex = index;
+                currentIndex = model.currentIndex;
               }),
         );
       }),

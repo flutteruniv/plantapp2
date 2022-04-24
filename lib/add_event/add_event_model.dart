@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'dart:math';
+import 'package:intl/intl.dart';
 
 class AddEventModel extends ChangeNotifier {
   String? title;
@@ -12,6 +13,7 @@ class AddEventModel extends ChangeNotifier {
   File? imageFile;
   bool isLoading = false;
   final timestamp = DateTime.now();
+  final textEditingController = TextEditingController();
 
   final picker = ImagePicker();
 
@@ -23,6 +25,24 @@ class AddEventModel extends ChangeNotifier {
   void endLoading() {
     isLoading = false;
     notifyListeners();
+  }
+
+  Future getDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(DateTime.now().year - 3),
+      lastDate: DateTime(DateTime.now().year + 3),
+    );
+
+    if (newDate != null) {
+      //選択した日付をTextFormFieldに設定
+      textEditingController.text = DateFormat("yyyy年MM月dd日").format(newDate);
+    } else {
+      return;
+    }
   }
 
   Future addEvent() async {
