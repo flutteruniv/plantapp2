@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:plantapp2/domain/events.dart';
 import 'package:provider/provider.dart';
 import 'entry_model.dart';
 
 class EntryPage extends StatelessWidget {
+  EntryPage(this.eventTitle);
+  String eventTitle;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<EntryModel>(
@@ -18,6 +22,7 @@ class EntryPage extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(eventTitle),
                   const SizedBox(height: 20),
                   TextFormField(
                     decoration: InputDecoration(
@@ -25,7 +30,7 @@ class EntryPage extends StatelessWidget {
                       labelText: 'エントリー名',
                     ),
                     onChanged: (text) {
-                      model.name = text;
+                      model.user = text;
                     },
                   ),
                   const SizedBox(height: 20),
@@ -39,6 +44,16 @@ class EntryPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'ジャンル',
+                    ),
+                    onChanged: (text) {
+                      model.genre = text;
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   TextButton(
                     style: ButtonStyle(
@@ -49,7 +64,7 @@ class EntryPage extends StatelessWidget {
                     onPressed: () async {
                       try {
                         model.startLoading();
-                        await model.addEntry();
+                        await model.addEntry(eventTitle);
                         final snackBar = SnackBar(
                           backgroundColor: Colors.green,
                           content: Text('エントリーしました。'),

@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:math';
 
 class AddEventModel extends ChangeNotifier {
   String? title;
@@ -10,6 +11,7 @@ class AddEventModel extends ChangeNotifier {
   String? detail;
   File? imageFile;
   bool isLoading = false;
+  final timestamp = DateTime.now();
 
   final picker = ImagePicker();
 
@@ -23,8 +25,20 @@ class AddEventModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //ヌルチェック 空だったらFireStoreに入れたくない
   Future addEvent() async {
+    // RandomID生成
+    //   String eventID([int length = 32]) {
+    //     const charset =
+    //         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    //     final random = Random.secure();
+    //     final randomStr =
+    //         List.generate(length, (_) => charset[random.nextInt(charset.length)])
+    //             .join();
+    //     return randomStr;
+    //   }
+    //   print(eventID());
+    //ヌルチェック 空だったらFireStoreに入れたくない
+
     //「title=""」も「date!.isEmpt」yも一緒の意味
     if (title == null || title == "") {
       throw 'イベントのタイトルが空です。';
@@ -54,6 +68,7 @@ class AddEventModel extends ChangeNotifier {
       'date': date,
       'detail': detail,
       'imgURL': imgURL,
+      'timestamp': timestamp,
     });
   }
 

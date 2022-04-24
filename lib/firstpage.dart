@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'main_model.dart';
-import 'event_detail.dart';
-import 'eventcard.dart';
+import 'main/main_model.dart';
+import 'event_detail/event_detail_page.dart';
+import 'widget/eventcard.dart';
 
 class FirstPage extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
@@ -28,10 +28,14 @@ class FirstPage extends StatelessWidget {
         body: Center(
           child: Consumer<MainModel>(builder: (context, model, child) {
             final events = model.events;
+            //なぜかでない
+            if (events == null) {
+              return CircularProgressIndicator();
+            }
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  for (int i = 0; i < 5; i++) ...{
+                  for (int i = 0; i < events.length; i++) ...{
                     EventCard(
                       imgURL: events[i].imgURL,
                       title: events[i].title,

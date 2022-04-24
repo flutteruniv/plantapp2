@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'firstpage.dart';
-import 'secondpage.dart';
+import 'add_event/add_event_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'main_model.dart';
+import 'main/main_model.dart';
 
 class RootPage extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
