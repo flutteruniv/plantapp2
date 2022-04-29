@@ -4,12 +4,14 @@ import 'add_event/add_event_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'main/main_model.dart';
+import 'profile/user_page.dart';
 
 class RootPage extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
   final List<Widget> _pageList = <Widget>[
     FirstPage(),
     SecondPage(),
+    UserPage()
   ];
 
   int currentIndex = 0;
@@ -39,6 +41,10 @@ class RootPage extends StatelessWidget {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.edit),
                   label: 'Make a Event',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.face),
+                  label: 'Profile',
                 ),
               ],
               currentIndex: currentIndex,
