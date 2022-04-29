@@ -16,6 +16,22 @@ class Events {
   }
 }
 
+class HostEntryList {
+  String? uid;
+  String? title;
+  String? date;
+  String? imgURL;
+  String? detail;
+
+  HostEntryList(DocumentSnapshot doc) {
+    uid = doc['uid'];
+    title = doc['title'];
+    date = doc['date'];
+    imgURL = doc['imgURL'];
+    detail = doc['detail'];
+  }
+}
+
 class Entry {
   String? user;
   String? rep;

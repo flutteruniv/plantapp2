@@ -28,10 +28,7 @@ class FirstPage extends StatelessWidget {
         body: Center(
           child: Consumer<MainModel>(builder: (context, model, child) {
             final events = model.events;
-            //なぜかでない
-            if (events == null) {
-              return CircularProgressIndicator();
-            }
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -50,27 +47,6 @@ class FirstPage extends StatelessWidget {
                       },
                     ),
                   }
-                  // EventCard(
-                  //   image: "assets/images/image1.jpg",
-                  //   title: events[0].title,
-                  //   date: events[0].date,
-                  //   press: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => EventDetail(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  // EventCard(
-                  //     image: "assets/images/image2.jpg",
-                  //     title: events[1].title,
-                  //     date: events[1].date),
-                  // EventCard(
-                  //     image: "assets/images/image3.png",
-                  //     title: "Juste Debout Tokyo",
-                  //     date: "2022/10/24"),
                 ],
               ),
             );

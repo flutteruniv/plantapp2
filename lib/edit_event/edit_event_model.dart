@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class AddEventModel extends ChangeNotifier {
+class EditEventModel extends ChangeNotifier {
   String? title;
   String? date;
   String? detail;
@@ -70,7 +69,6 @@ class AddEventModel extends ChangeNotifier {
     if (detail == null || detail!.isEmpty) {
       throw '詳細が空です。';
     }
-    final uid = await FirebaseAuth.instance.currentUser!.uid;
 
     final doc = FirebaseFirestore.instance.collection('event').doc();
 
@@ -91,7 +89,6 @@ class AddEventModel extends ChangeNotifier {
       'detail': detail,
       'imgURL': imgURL,
       'timestamp': timestamp,
-      'uid': uid,
     });
   }
 

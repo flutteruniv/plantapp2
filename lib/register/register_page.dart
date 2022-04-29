@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plantapp2/login/login_page.dart';
 import 'package:plantapp2/register/register_model.dart';
 import 'package:provider/provider.dart';
 
@@ -15,92 +16,133 @@ class RegisterPage extends StatelessWidget {
         ),
         body: Center(
           child: Consumer<RegisterModel>(builder: (context, model, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            return Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                    onChanged: (email) {
-                      model.setEmail(email);
-                    },
-                    decoration: const InputDecoration(
-                      // filled: true,
-                      hintText: 'メールアドレス',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black54,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          model.setUserName(value);
+                        },
+                        decoration: const InputDecoration(
+                          // filled: true,
+                          hintText: 'ユーザ名',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black54,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.lightBlue),
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.lightBlue),
-                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                    onChanged: (password) {
-                      model.setPassword(password);
-                    },
-                    decoration: const InputDecoration(
-                      // filled: true,
-                      hintText: 'パスワード',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black54,
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextField(
+                        onChanged: (email) {
+                          model.setEmail(email);
+                        },
+                        decoration: const InputDecoration(
+                          // filled: true,
+                          hintText: 'メールアドレス',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black54,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.lightBlue),
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.lightBlue),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextField(
+                        onChanged: (password) {
+                          model.setPassword(password);
+                        },
+                        decoration: const InputDecoration(
+                          // filled: true,
+                          hintText: 'パスワード',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black54,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.lightBlue),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    //パスワード確認用
+                    // Padding(
+                    //   padding: const EdgeInsets.all(12.0),
+                    //   child: TextField(
+                    //       onChanged: (value) {
+                    //         null;
+                    //       },
+                    //       decoration: const InputDecoration(
+                    //         // filled: true,
+                    //         hintText: 'パスワード（確認）',
+                    //         enabledBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(
+                    //             color: Colors.black54,
+                    //           ),
+                    //         ),
+                    //         focusedBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: Colors.lightBlue),
+                    //         ),
+                    //       ),
+                    //       obscureText: true),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SizedBox(
+                        width: 300,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            model.startLoading();
+                            try {
+                              await model.signUp();
+                              Navigator.of(context).pop(LoginPage());
+                              final snackBar = SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text(model.infoText),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } catch (e) {
+                              final snackBar = SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(e.toString()));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } finally {
+                              model.endLoading();
+                            }
+                          },
+                          child: Text('会員登録'),
+                          style: ElevatedButton.styleFrom(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                //パスワード確認用
-                // Padding(
-                //   padding: const EdgeInsets.all(12.0),
-                //   child: TextField(
-                //       onChanged: (value) {
-                //         null;
-                //       },
-                //       decoration: const InputDecoration(
-                //         // filled: true,
-                //         hintText: 'パスワード（確認）',
-                //         enabledBorder: OutlineInputBorder(
-                //           borderSide: BorderSide(
-                //             color: Colors.black54,
-                //           ),
-                //         ),
-                //         focusedBorder: OutlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.lightBlue),
-                //         ),
-                //       ),
-                //       obscureText: true),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: SizedBox(
-                    width: 300,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          await model.signUp();
-                          // Navigator.of(context).pop(model.title);
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(e.toString()));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      },
-                      child: Text('会員登録'),
-                      style: ElevatedButton.styleFrom(),
+                if (model.isLoading)
+                  Container(
+                    color: Colors.black54,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
                   ),
-                ),
               ],
             );
           }),

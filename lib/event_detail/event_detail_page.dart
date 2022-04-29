@@ -30,7 +30,6 @@ class EventDetail extends StatelessWidget {
         body: Center(
           child: Consumer<MainModel>(builder: (context, model, child) {
             final events = model.events;
-
             return SingleChildScrollView(
               child: Column(children: [
                 Image.network(
