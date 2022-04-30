@@ -86,6 +86,7 @@ class AddEventModel extends ChangeNotifier {
 
     //FireStoreに追加
     await doc.set({
+      'eventID': doc.id,
       'title': title,
       'date': date,
       'detail': detail,

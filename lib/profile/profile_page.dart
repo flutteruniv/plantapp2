@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:plantapp2/host_event/host_event_page.dart';
 import 'package:plantapp2/login/login_page.dart';
+import 'package:plantapp2/my_entry_event/my_entry_page.dart';
 import 'package:plantapp2/profile/profile_page_model.dart';
 import 'package:provider/provider.dart';
 import '../profile_edit/profile_edit_page.dart';
@@ -28,6 +29,14 @@ class ProfilePage extends StatelessWidget {
                     ListTile(
                       title: Text("エントリー済みイベント"),
                       trailing: Icon(Icons.arrow_forward),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyEntryPage(),
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       title: Text("イベントの編集"),

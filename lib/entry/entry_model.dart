@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EntryModel extends ChangeNotifier {
+  EntryModel(id) {
+    eventId = id;
+  }
   String? user;
   String? rep;
   String? genre;
   bool isLoading = false;
+  String? eventId;
 
   final timestamp = DateTime.now();
   final picker = ImagePicker();
@@ -24,7 +27,7 @@ class EntryModel extends ChangeNotifier {
   }
 
   //ヌルチェック 空だったらFireStoreに入れたくない
-  Future addEntry(String eventTitle) async {
+  Future addEntry(String eventTitle, String eventDate) async {
     //「title=""」も「date!.isEmpt」yも一緒の意味
     if (user == null || user == "") {
       throw 'エントリー名が空です。';
@@ -37,20 +40,18 @@ class EntryModel extends ChangeNotifier {
     }
 
     final doc = FirebaseFirestore.instance.collection('entry').doc();
-
-    // final title = await FirebaseFirestore.instance
-    //     .collection('event')
-    //     //todo isEqualTo:イベント名にしたい。
-    //     .where('title', isEqualTo: events[1].title.toString())
-    //     .get();
+    final uid = FirebaseAuth.instance.currentUser!.uid;
 
     //FireStoreに追加
     await doc.set({
+      'eventID': eventId,
+      'uid': uid,
       'user': user,
       'rep': rep,
       'genre': genre,
       'timestamp': timestamp,
-      'title': eventTitle
+      'title': eventTitle,
+      'eventDate': eventDate,
     });
   }
 }

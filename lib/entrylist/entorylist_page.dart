@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import '../main/main_model.dart';
+import 'entorylist_model.dart';
 import '../widget/entrycard.dart';
 
 class EntoryList extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
-  EntoryList(this.eventNum, this.eventTitle);
-  int eventNum;
+  EntoryList(this.eventTitle, this.id);
   String eventTitle;
+  String id;
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +20,15 @@ class EntoryList extends StatelessWidget {
       print(ref.get("date"));
     });
 
-    return ChangeNotifierProvider<MainModel>(
+    return ChangeNotifierProvider<EntoryListModel>(
       // createでfetchBooks()も呼び出すようにしておく。
-      create: (_) => MainModel()..fetchEntryList(eventTitle.toString()),
+      create: (_) => EntoryListModel(id)..fetchEntryList(eventTitle.toString()),
       child: Scaffold(
         appBar: AppBar(
           title: Text('エントリーリスト${eventTitle}'),
         ),
         body: Center(
-          child: Consumer<MainModel>(builder: (context, model, child) {
+          child: Consumer<EntoryListModel>(builder: (context, model, child) {
             // final events = model.events;
             final entryList = model.entrylist;
 

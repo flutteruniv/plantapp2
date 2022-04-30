@@ -2,52 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plantapp2/entry/entry_page.dart';
 import 'package:provider/provider.dart';
-import '../main/main_model.dart';
+import 'my_event_detail_model.dart';
 import '../entrylist/entorylist_page.dart';
 
-class EventDetail extends StatelessWidget {
+class MyEventDetailPage extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
-  EventDetail(this.eventNum);
-  int eventNum;
+  MyEventDetailPage(this.eventID);
+  String eventID;
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('event')
-        .doc('DEarDWxlkm6lkrmAvNZs')
-        .get()
-        .then((ref) {
-      print(ref.get("date"));
-    });
-
-    return ChangeNotifierProvider<MainModel>(
+    return ChangeNotifierProvider<MyEventDetailModel>(
       // createでfetchBooks()も呼び出すようにしておく。
-      create: (_) => MainModel()..fetchEvents(),
+      create: (_) => MyEventDetailModel(eventID)..fetchMyEventDetail(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('詳細'),
         ),
         body: Center(
-          child: Consumer<MainModel>(builder: (context, model, child) {
-            final events = model.events;
+          child: Consumer<MyEventDetailModel>(builder: (context, model, child) {
+            // final events = model.events;
+
             return SingleChildScrollView(
               child: Column(children: [
                 Image.network(
-                  events[eventNum].imgURL.toString(),
+                  model.imgURL.toString(),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  events[eventNum].title.toString(),
+                  model.title.toString(),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  events[eventNum].date.toString(),
+                  model.date.toString(),
                 ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    events[eventNum].detail.toString(),
+                    model.detail.toString(),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -59,8 +52,9 @@ class EventDetail extends StatelessWidget {
                   onPressed: () => {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return EntoryList(events[eventNum].title.toString(),
-                          events[eventNum].eventId.toString());
+                      return EntoryList(
+                          model.title.toString(),
+                          model.eventId.toString());
                     }))
                   },
                   child: Text(
@@ -74,17 +68,18 @@ class EventDetail extends StatelessWidget {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.teal),
                   ),
-                  onPressed: () => {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return EntryPage(
-                          events[eventNum].title.toString(),
-                          events[eventNum].eventId.toString(),
-                          events[eventNum].date.toString());
-                    }))
-                  },
+            onPressed:null,
+                  // onPressed: () => {
+                  //   Navigator.of(context)
+                  //       .push(MaterialPageRoute(builder: (context) {
+                  //     return EntryPage(
+                  //         events[eventNum].title.toString(),
+                  //         events[eventNum].eventId.toString(),
+                  //         events[eventNum].date.toString());
+                  //   }))
+                  // },
                   child: Text(
-                    "エントリーする",
+                    "エントリー内容を変更する",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

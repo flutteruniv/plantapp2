@@ -4,26 +4,46 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
 import 'package:intl/intl.dart';
 
 class EditEventModel extends ChangeNotifier {
+  EditEventModel(title, date, detail, imgURL, id) {
+    titleEditingController.text = title!;
+    dateEditingController.text = date.toString();
+    detailEditingController.text = detail.toString();
+    imgURL = imgURL;
+    documentId = id;
+  }
+
   String? title;
   String? date;
   String? detail;
+  String? imgURL;
+  String? documentId;
   File? imageFile;
   bool isLoading = false;
+
   final timestamp = DateTime.now();
-  final textEditingController = TextEditingController();
+
+  final titleEditingController = TextEditingController();
+  final dateEditingController = TextEditingController();
+  final detailEditingController = TextEditingController();
 
   final picker = ImagePicker();
 
-  void startLoading() {
-    isLoading = true;
+  void setTitle(String title) {
+    this.title = title;
     notifyListeners();
   }
 
-  void endLoading() {
-    isLoading = false;
+  void setDate(String date) {
+    this.date = date;
+    notifyListeners();
+  }
+
+  void setDetail(String detail) {
+    this.detail = detail;
     notifyListeners();
   }
 
@@ -39,56 +59,67 @@ class EditEventModel extends ChangeNotifier {
 
     if (newDate != null) {
       //選択した日付をTextFormFieldに設定
-      textEditingController.text = DateFormat("yyyy年MM月dd日").format(newDate);
+      dateEditingController.text = DateFormat("yyyy年MM月dd日").format(newDate);
     } else {
       return;
     }
   }
 
-  Future addEvent() async {
-    // RandomID生成
-    //   String eventID([int length = 32]) {
-    //     const charset =
-    //         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    //     final random = Random.secure();
-    //     final randomStr =
-    //         List.generate(length, (_) => charset[random.nextInt(charset.length)])
-    //             .join();
-    //     return randomStr;
-    //   }
-    //   print(eventID());
-    //ヌルチェック 空だったらFireStoreに入れたくない
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
 
-    //「title=""」も「date!.isEmpt」yも一緒の意味
-    if (title == null || title == "") {
-      throw 'イベントのタイトルが空です。';
-    }
-    if (date == null || date!.isEmpty) {
-      throw '日程が空です。';
-    }
-    if (detail == null || detail!.isEmpty) {
-      throw '詳細が空です。';
-    }
+  void endLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
 
-    final doc = FirebaseFirestore.instance.collection('event').doc();
+  bool isUpdated() {
+    return title != null;
+  }
 
-    String? imgURL;
-
-    //storageにアップロード nullじゃなければ
+  Future updateEvent() async {
+    print(documentId);
     if (imageFile != null) {
+      final doc = FirebaseFirestore.instance.collection('event').doc();
+
       final task = await FirebaseStorage.instance
           .ref('event/${doc.id}')
           .putFile(imageFile!);
       imgURL = await task.ref.getDownloadURL();
     }
 
-    //FireStoreに追加
-    await doc.set({
+    this.title = titleEditingController.text;
+    this.date = dateEditingController.text;
+    this.detail = detailEditingController.text;
+    await FirebaseFirestore.instance
+        .collection('event')
+        .doc(documentId)
+        .update({
       'title': title,
       'date': date,
       'detail': detail,
       'imgURL': imgURL,
-      'timestamp': timestamp,
+    });
+  }
+
+  Future deleteEvent() {
+    return FirebaseFirestore.instance
+        .collection('event')
+        .doc(documentId)
+        .delete();
+  }
+
+  Future deleteEntryAll() {
+    return FirebaseFirestore.instance
+        .collection('entry')
+        .where('eventID', isEqualTo: documentId)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
     });
   }
 

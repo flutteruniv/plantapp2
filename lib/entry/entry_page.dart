@@ -4,13 +4,15 @@ import 'package:provider/provider.dart';
 import 'entry_model.dart';
 
 class EntryPage extends StatelessWidget {
-  EntryPage(this.eventTitle);
+  EntryPage(this.eventTitle, this.eventId, this.eventDate);
   String eventTitle;
+  String eventDate;
+  String eventId;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<EntryModel>(
-      create: (_) => EntryModel(),
+      create: (_) => EntryModel(eventId),
       child: Scaffold(
         appBar: AppBar(
           title: Text('エントリーページ'),
@@ -64,7 +66,7 @@ class EntryPage extends StatelessWidget {
                     onPressed: () async {
                       try {
                         model.startLoading();
-                        await model.addEntry(eventTitle);
+                        await model.addEntry(eventTitle, eventDate);
                         final snackBar = SnackBar(
                           backgroundColor: Colors.green,
                           content: Text('エントリーしました。'),

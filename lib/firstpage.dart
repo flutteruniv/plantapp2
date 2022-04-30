@@ -6,18 +6,8 @@ import 'event_detail/event_detail_page.dart';
 import 'widget/eventcard.dart';
 
 class FirstPage extends StatelessWidget {
-  // final docRef = FirebaseFirestore.instance.doc('date');
-
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('event')
-        .doc('DEarDWxlkm6lkrmAvNZs')
-        .get()
-        .then((ref) {
-      print(ref.get("date"));
-    });
-
     return ChangeNotifierProvider<MainModel>(
       // createでfetchBooks()も呼び出すようにしておく。
       create: (_) => MainModel()..fetchEvents(),
