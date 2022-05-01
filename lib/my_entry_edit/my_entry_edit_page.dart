@@ -1,81 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../rootpage.dart';
-import 'edit_event_model.dart';
 
-class EditEventPage extends StatelessWidget {
-  EditEventPage(this.title, this.date, this.detail, this.imgURL, this.id);
-  final String? title;
-  final String? date;
-  final String? detail;
-  final String? imgURL;
-  final String? id;
+import '../domain/events.dart';
+import '../rootpage.dart';
+import 'my_entry_edit_model.dart';
+
+class MyEntryEditPage extends StatelessWidget {
+  MyEntryEditPage(this.myEntryList);
+  final MyEntryList myEntryList;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<EditEventModel>(
-      create: (_) => EditEventModel(title, date, detail, imgURL, id),
+    return ChangeNotifierProvider<MyEntryEditModel>(
+      create: (_) => MyEntryEditModel(myEntryList.user, myEntryList.rep,
+          myEntryList.genre, myEntryList.entryId),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('イベント編集'),
+          title: Text('エントリー内容編集'),
         ),
         body: Center(
-            child: Consumer<EditEventModel>(builder: (context, model, child) {
+            child: Consumer<MyEntryEditModel>(builder: (context, model, child) {
           return Stack(
             children: [
               SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      child: SizedBox(
-                        width: 200,
-                        height: 160,
-                        child: model.imageFile != null
-                            ? Image.file(model.imageFile!)
-                            : Image.network(
-                                imgURL.toString(),
-                              ),
-                      ),
-                      onTap: () async {
-                        await model.pickImage();
-                      },
-                    ),
-                    const SizedBox(height: 20),
                     TextFormField(
-                      controller: model.titleEditingController,
+                      controller: model.userEditingController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'イベント名',
+                        labelText: 'エントリー名',
                       ),
                       onChanged: (text) {
-                        model.title = text;
+                        model.user = text;
                       },
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: model.dateEditingController,
+                      controller: model.repEditingController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: '日程',
+                        labelText: 'レペゼン',
                       ),
-                      onTap: () {
-                        model.getDate(context);
-                      },
                       onChanged: (text) {
-                        model.date = text;
+                        model.rep = text;
                       },
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: model.genreEditingController,
                       maxLines: null,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'イベント詳細',
+                        labelText: 'ジャンル',
                       ),
                       onChanged: (text) {
-                        model.detail = text;
+                        model.genre = text;
                       },
                     ),
                     const SizedBox(height: 20),
@@ -88,11 +70,11 @@ class EditEventPage extends StatelessWidget {
                       onPressed: () async {
                         try {
                           model.startLoading();
-                          await model.updateEvent();
+                          await model.updateEntry();
                           Navigator.popUntil(context, (route) => route.isFirst);
                           final snackBar = SnackBar(
                             backgroundColor: Colors.green,
-                            content: Text('イベントを更新しました。'),
+                            content: Text('エントリー内容をを更新しました。'),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } catch (e) {
@@ -108,7 +90,7 @@ class EditEventPage extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        "イベント更新",
+                        "エントリー内容更新",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -124,7 +106,7 @@ class EditEventPage extends StatelessWidget {
                           builder: (_) {
                             return AlertDialog(
                               title: Text("削除の確認。"),
-                              content: Text("イベント削除後は取り消すことができません。"
+                              content: Text("エントリーキャンセル後は取り消すことができません。"
                                   "本当によろしいですか？"),
                               actions: <Widget>[
                                 // ボタン領域
@@ -135,8 +117,7 @@ class EditEventPage extends StatelessWidget {
                                 TextButton(
                                     child: Text("OK"),
                                     onPressed: () {
-                                      model.deleteEvent();
-                                      model.deleteEntryAll();
+                                      model.deleteEntry();
                                       Navigator.pop(context);
                                     }),
                               ],
@@ -145,7 +126,7 @@ class EditEventPage extends StatelessWidget {
                         );
                       },
                       child: Text(
-                        "イベント削除",
+                        "エントリーキャンセル",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

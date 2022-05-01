@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plantapp2/edit_event/edit_event_page.dart';
 import 'package:plantapp2/my_event_detail/my_event_detail_page.dart';
 import 'package:provider/provider.dart';
 import 'my_entry_model.dart';
@@ -9,7 +8,7 @@ class MyEntryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MyEntryModel>(
       // createでfetchBooks()も呼び出すようにしておく。
-      create: (_) => MyEntryModel()..fetchMyEventList(),
+      create: (_) => MyEntryModel()..fetchMyEntryList(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('エントリー済みイベント'),
@@ -17,7 +16,6 @@ class MyEntryPage extends StatelessWidget {
         body: Center(
           child: Consumer<MyEntryModel>(builder: (context, model, child) {
             final myEntryList = model.myEntryList;
-
             return SingleChildScrollView(
               child: Column(children: [
                 const SizedBox(height: 10),
@@ -29,8 +27,7 @@ class MyEntryPage extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return MyEventDetailPage(
-                              myEntryList[i].eventId.toString());
+                          return MyEventDetailPage(myEntryList[i]);
                         }));
                       },
                     ),

@@ -37,12 +37,20 @@ class HostEntryList {
 }
 
 class MyEntryList {
+  String? user;
+  String? rep;
+  String? genre;
+  String? entryId;
   String? eventId;
   String? uid;
   String? title;
   String? eventDate;
 
   MyEntryList(DocumentSnapshot doc) {
+    user = doc['user'];
+    rep = doc['rep'];
+    genre = doc['genre'];
+    entryId = doc.id;
     eventId = doc['eventID'];
     uid = doc['uid'];
     title = doc['title'];

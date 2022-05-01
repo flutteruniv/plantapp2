@@ -8,11 +8,11 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 
 class EditEventModel extends ChangeNotifier {
-  EditEventModel(title, date, detail, imgURL, id) {
+  EditEventModel(title, date, detail, url, id) {
     titleEditingController.text = title!;
     dateEditingController.text = date.toString();
     detailEditingController.text = detail.toString();
-    imgURL = imgURL;
+    imgURL = url;
     documentId = id;
   }
 

@@ -54,32 +54,55 @@ class ProfilePage extends StatelessWidget {
                       title: Text("ログアウト"),
                       trailing: Icon(Icons.arrow_forward),
                       onTap: () async {
-                        model.startLoading();
-                        try {
-                          await model.signOut();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
-                          final snackBar = SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text(model.infoText),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(e.toString()));
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } finally {}
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: Text("プロフィールを編集しますか？"),
+                              content: null,
+                              actions: <Widget>[
+                                // ボタン領域
+                                TextButton(
+                                  child: Text("戻る"),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                TextButton(
+                                    child: Text("ログアウトする"),
+                                    onPressed: () async {
+                                      model.startLoading();
+                                      try {
+                                        await model.signOut();
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage()),
+                                            (_) => false);
+                                        final snackBar = SnackBar(
+                                          backgroundColor: Colors.green,
+                                          content: Text(model.infoText),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } catch (e) {
+                                        final snackBar = SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(e.toString()));
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage(),
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      }
+                                    }),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                   ],
@@ -102,34 +125,35 @@ class ProfilePage extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       showDialog(
-                          context: context,
-                          builder: (_) => CupertinoAlertDialog(
-                                title: Text("Change your profile?"),
-                                content: Text("プロフィールを編集しますか？"),
-                                actions: [
-                                  CupertinoDialogAction(
-                                      child: Text('戻る'),
-                                      isDestructiveAction: true,
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      }),
-                                  CupertinoDialogAction(
-                                    child: Text('編集する'),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ProfileEditPage(
-                                              model.username,
-                                              model.rep,
-                                              model.genre,
-                                              model.imgURL),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                ],
-                              ));
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Text("プロフィールを編集しますか？"),
+                            content: null,
+                            actions: <Widget>[
+                              // ボタン領域
+                              TextButton(
+                                child: Text("戻る"),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              TextButton(
+                                  child: Text("編集する"),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileEditPage(
+                                            model.username,
+                                            model.rep,
+                                            model.genre,
+                                            model.imgURL),
+                                      ),
+                                    );
+                                  }),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text('プロフィールを編集する'),
                   ),

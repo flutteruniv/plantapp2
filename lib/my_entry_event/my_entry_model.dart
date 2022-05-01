@@ -18,7 +18,7 @@ class MyEntryModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchMyEventList() async {
+  Future<void> fetchMyEntryList() async {
     // Firestoreからコレクション'events'(QuerySnapshot)を取得してdocsに代入。
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final snapshot = await FirebaseFirestore.instance

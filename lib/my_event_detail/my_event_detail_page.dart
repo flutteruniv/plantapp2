@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plantapp2/entry/entry_page.dart';
+import 'package:plantapp2/my_entry_edit/my_entry_edit_page.dart';
 import 'package:provider/provider.dart';
+import '../domain/events.dart';
 import 'my_event_detail_model.dart';
 import '../entrylist/entorylist_page.dart';
 
 class MyEventDetailPage extends StatelessWidget {
   // final docRef = FirebaseFirestore.instance.doc('date');
-  MyEventDetailPage(this.eventID);
-  String eventID;
+  MyEventDetailPage(this.myEntryList);
+  final MyEntryList myEntryList;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MyEventDetailModel>(
       // createでfetchBooks()も呼び出すようにしておく。
-      create: (_) => MyEventDetailModel(eventID)..fetchMyEventDetail(),
+      create: (_) =>
+          MyEventDetailModel(myEntryList.eventId)..fetchMyEventDetail(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('詳細'),
@@ -29,6 +30,9 @@ class MyEventDetailPage extends StatelessWidget {
                   model.imgURL.toString(),
                 ),
                 const SizedBox(height: 20),
+                Text(
+                  myEntryList.user.toString(),
+                ),
                 Text(
                   model.title.toString(),
                 ),
@@ -53,8 +57,7 @@ class MyEventDetailPage extends StatelessWidget {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return EntoryList(
-                          model.title.toString(),
-                          model.eventId.toString());
+                          model.title.toString(), model.eventId.toString());
                     }))
                   },
                   child: Text(
@@ -68,16 +71,12 @@ class MyEventDetailPage extends StatelessWidget {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.teal),
                   ),
-            onPressed:null,
-                  // onPressed: () => {
-                  //   Navigator.of(context)
-                  //       .push(MaterialPageRoute(builder: (context) {
-                  //     return EntryPage(
-                  //         events[eventNum].title.toString(),
-                  //         events[eventNum].eventId.toString(),
-                  //         events[eventNum].date.toString());
-                  //   }))
-                  // },
+                  onPressed: () => {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return MyEntryEditPage(myEntryList);
+                    }))
+                  },
                   child: Text(
                     "エントリー内容を変更する",
                     style: TextStyle(color: Colors.white),
