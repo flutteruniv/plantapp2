@@ -81,15 +81,19 @@ class LoginPage extends StatelessWidget {
                                 ),
                               );
                               final snackBar = SnackBar(
-                                backgroundColor: Colors.green,
+                                backgroundColor: Colors.teal,
                                 content: Text(model.infoText),
                               );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } catch (e) {
                               final snackBar = SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text(e.toString()));
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  'ログインできません。',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } finally {
@@ -97,7 +101,9 @@ class LoginPage extends StatelessWidget {
                             }
                           },
                           child: Text('ログイン'),
-                          style: ElevatedButton.styleFrom(),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal,
+                          ),
                         ),
                       ),
                     ),

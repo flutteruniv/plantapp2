@@ -26,7 +26,7 @@ class SecondPage extends StatelessWidget {
                         height: 160,
                         child: model.imageFile != null
                             ? Image.file(model.imageFile!)
-                            : Container(color: Colors.grey),
+                            : Image.asset('assets/images/noimage.png'),
                       ),
                       onTap: () async {
                         await model.pickImage();
@@ -35,8 +35,15 @@ class SecondPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'イベント名',
+                        hintText: 'イベント名',
+                        hintStyle: const TextStyle(fontSize: 12),
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                       onChanged: (text) {
                         model.title = text;
@@ -45,9 +52,16 @@ class SecondPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: textEditingController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '日程',
+                      decoration: InputDecoration(
+                        hintText: '日程',
+                        hintStyle: const TextStyle(fontSize: 12),
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                       onTap: () {
                         model.getDate(context);
@@ -58,10 +72,18 @@ class SecondPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'イベント詳細',
+                      decoration: InputDecoration(
+                        hintText: 'イベント詳細',
+                        hintStyle: const TextStyle(fontSize: 12),
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                       onChanged: (text) {
                         model.detail = text;
@@ -100,6 +122,7 @@ class SecondPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

@@ -26,13 +26,15 @@ class MyEventDetailPage extends StatelessWidget {
 
             return SingleChildScrollView(
               child: Column(children: [
-                Image.network(
-                  model.imgURL.toString(),
+                Container(
+                  child: model.imgURL != null || model.imgURL == ""
+                      ? Image.network(
+                          model.imgURL.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/noimage.png'),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  myEntryList.user.toString(),
-                ),
                 Text(
                   model.title.toString(),
                 ),

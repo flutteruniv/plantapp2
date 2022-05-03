@@ -36,6 +36,7 @@ class RootPage extends StatelessWidget {
             Scaffold(
               body: _pageList[model.currentIndex],
               bottomNavigationBar: BottomNavigationBar(
+                  backgroundColor: Colors.black,
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Icon(Icons.event_note),
@@ -46,12 +47,14 @@ class RootPage extends StatelessWidget {
                       label: 'Create an Event',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.face),
-                      label: 'Profile',
-                    ),
+                        icon: Icon(Icons.face),
+                        label: 'Profile',
+                        backgroundColor: Colors.white),
                   ],
                   currentIndex: currentIndex,
                   selectedItemColor: Colors.amber[800],
+                  unselectedItemColor: Colors.white70,
+
                   //todo ログイン確認
                   onTap: (index) {
                     if (FirebaseAuth.instance.currentUser != null) {

@@ -60,6 +60,7 @@ class EditEventModel extends ChangeNotifier {
     if (newDate != null) {
       //選択した日付をTextFormFieldに設定
       dateEditingController.text = DateFormat("yyyy年MM月dd日").format(newDate);
+      date = dateEditingController.text;
     } else {
       return;
     }

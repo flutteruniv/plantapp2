@@ -34,8 +34,14 @@ class EditEventPage extends StatelessWidget {
                         height: 160,
                         child: model.imageFile != null
                             ? Image.file(model.imageFile!)
-                            : Image.network(
-                                imgURL.toString(),
+                            : Container(
+                                child: model.imgURL != null ||
+                                        model.imgURL == ""
+                                    ? Image.network(
+                                        model.imgURL.toString(),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset('assets/images/noimage.png'),
                               ),
                       ),
                       onTap: () async {

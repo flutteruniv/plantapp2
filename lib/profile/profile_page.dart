@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                           context: context,
                           builder: (_) {
                             return AlertDialog(
-                              title: Text("プロフィールを編集しますか？"),
+                              title: Text("ログアウトしますか？"),
                               content: null,
                               actions: <Widget>[
                                 // ボタン領域
@@ -118,7 +118,7 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 60,
+                    radius: 75,
                     backgroundColor: Colors.blueGrey,
                     backgroundImage: NetworkImage(model.imgURL.toString()),
                   ),
@@ -155,12 +155,34 @@ class ProfilePage extends StatelessWidget {
                         },
                       );
                     },
-                    child: Text('プロフィールを編集する'),
+                    child: Text(
+                      'プロフィールを編集する',
+                      style: TextStyle(color: Colors.teal),
+                    ),
                   ),
-                  Text(model.username ?? 'ユーザ名なし'),
-                  Text(model.rep ?? 'レペゼンなし'),
-                  Text(model.genre ?? 'ジャンルなし'),
-                  Text(model.email ?? 'メールアドレスなし'),
+                  Text(
+                    model.username ?? 'ユーザ名なし',
+                    style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    model.rep ?? 'レペゼンなし',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    model.genre ?? 'ジャンルなし',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white70,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -189,7 +211,7 @@ class header extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        decoration: BoxDecoration(color: Colors.blue[300]),
+        decoration: BoxDecoration(color: Colors.teal),
       ),
     );
   }

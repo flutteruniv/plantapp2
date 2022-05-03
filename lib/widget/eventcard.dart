@@ -5,7 +5,6 @@ class EventCard extends StatelessWidget {
   final String? imgURL, title, date;
   final void Function()? press;
 
-  // "assets/images/image1.jpg"
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,32 +20,35 @@ class EventCard extends StatelessWidget {
                 topLeft: Radius.circular(36),
                 topRight: Radius.circular(36),
               ),
-              child: Image.network(
-                imgURL!,
-                fit: BoxFit.cover,
-              ),
+              child: imgURL != null || imgURL == ""
+                  ? Image.network(
+                      imgURL!,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset('assets/images/noimage.png'),
             ),
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20),
               decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(36),
-                    bottomRight: Radius.circular(36),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      spreadRadius: 1.0,
-                      blurRadius: 10.0,
-                      offset: Offset(10, 10),
-                    ),
-                  ]),
+                color: Colors.white10,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(36),
+                  bottomRight: Radius.circular(36),
+                ),
+              ),
               child: Column(
                 children: [
-                  Text("$title"),
-                  Text("$date"),
+                  Text(
+                    "$title",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "$date",
+                    style: TextStyle(
+                        color: Colors.white60, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             )

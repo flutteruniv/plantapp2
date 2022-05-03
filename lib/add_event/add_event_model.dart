@@ -32,6 +32,7 @@ class AddEventModel extends ChangeNotifier {
     final initialDate = DateTime.now();
 
     final newDate = await showDatePicker(
+      locale: const Locale("ja"),
       context: context,
       initialDate: initialDate,
       firstDate: DateTime(DateTime.now().year - 3),
@@ -41,6 +42,7 @@ class AddEventModel extends ChangeNotifier {
     if (newDate != null) {
       //選択した日付をTextFormFieldに設定
       textEditingController.text = DateFormat("yyyy年MM月dd日").format(newDate);
+      date = textEditingController.text;
     } else {
       return;
     }

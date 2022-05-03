@@ -12,14 +12,6 @@ class EntoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('event')
-        .doc('DEarDWxlkm6lkrmAvNZs')
-        .get()
-        .then((ref) {
-      print(ref.get("date"));
-    });
-
     return ChangeNotifierProvider<EntoryListModel>(
       // createでfetchBooks()も呼び出すようにしておく。
       create: (_) => EntoryListModel(id)..fetchEntryList(eventTitle.toString()),

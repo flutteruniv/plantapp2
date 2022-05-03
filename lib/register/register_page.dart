@@ -115,14 +115,20 @@ class RegisterPage extends StatelessWidget {
                               Navigator.of(context).pop(LoginPage());
                               final snackBar = SnackBar(
                                 backgroundColor: Colors.green,
-                                content: Text(model.infoText),
+                                content: Text(
+                                  model.infoText,
+                                ),
                               );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } catch (e) {
                               final snackBar = SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text(e.toString()));
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  e.toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } finally {
@@ -130,7 +136,9 @@ class RegisterPage extends StatelessWidget {
                             }
                           },
                           child: Text('会員登録'),
-                          style: ElevatedButton.styleFrom(),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal,
+                          ),
                         ),
                       ),
                     ),

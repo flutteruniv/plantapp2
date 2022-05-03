@@ -27,8 +27,8 @@ class ProfileEditPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         child: Container(
-                          width: 100,
-                          height: 100,
+                          width: 150,
+                          height: 150,
                           clipBehavior: Clip.antiAlias,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
@@ -69,6 +69,7 @@ class ProfileEditPage extends StatelessWidget {
                           model.setGenre(text);
                         },
                       ),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: model.isUpdated()
                             ? () async {

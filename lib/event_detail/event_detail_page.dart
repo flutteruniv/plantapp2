@@ -32,8 +32,14 @@ class EventDetail extends StatelessWidget {
             final events = model.events;
             return SingleChildScrollView(
               child: Column(children: [
-                Image.network(
-                  events[eventNum].imgURL.toString(),
+                Container(
+                  child: events[eventNum].imgURL != null ||
+                          events[eventNum].imgURL == ""
+                      ? Image.network(
+                          events[eventNum].imgURL.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/noimage.png'),
                 ),
                 const SizedBox(height: 20),
                 Text(

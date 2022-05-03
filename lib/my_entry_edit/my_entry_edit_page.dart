@@ -94,6 +94,7 @@ class MyEntryEditPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    const SizedBox(height: 10),
                     TextButton(
                       style: ButtonStyle(
                         backgroundColor:

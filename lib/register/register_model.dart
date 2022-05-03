@@ -45,30 +45,28 @@ class RegisterModel extends ChangeNotifier {
     // this.password = authController.text;
 
     if (this.email == null || this.email == "") {
-      throw 'イベントのタイトルが空です。';
+      throw 'メールアドレスが空です。';
     }
     if (this.password == null || this.password.isEmpty) {
-      throw '日程が空です。';
+      throw 'パスワードが空です。';
     }
     if (this.username == null || this.username!.isEmpty) {
-      throw '詳細が空です。';
+      throw 'ユーザ名が空です。';
     }
 
-    if (this.email != null && this.password != null) {
-      final auth = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      final user = auth.user;
-      if (user != null) {
-        final uid = user.uid;
-        final doc = FirebaseFirestore.instance.collection('users').doc(uid);
-        await doc.set({
-          'uid': uid,
-          'email': email,
-          'username': username,
-        });
-        print(email);
-        print(username);
-      }
+    final auth = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    final user = auth.user;
+    if (user != null) {
+      final uid = user.uid;
+      final doc = FirebaseFirestore.instance.collection('users').doc(uid);
+      await doc.set({
+        'uid': uid,
+        'email': email,
+        'username': username,
+      });
+      print(email);
+      print(username);
     }
   }
 }
