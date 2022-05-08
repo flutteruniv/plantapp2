@@ -1,64 +1,86 @@
-// import 'dart:collection';
-//
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'dart:io';
-// import 'package:intl/intl.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:table_calendar/table_calendar.dart';
-//
-// class CalenderModel extends ChangeNotifier {
-//   final DateTime _focusedDay = DateTime.now();
-//   late DateTime selectedDay;
-//   Map<DateTime, List> _eventsList = {};
-//   int getHashCode(DateTime key) {
-//     return key.day * 1000000 + key.month * 10000 + key.year;
-//   }
-//
-//   final _events = LinkedHashMap<DateTime, List>(
-//     equals: isSameDay,
-//     hashCode: getHashCode,
-//   )..addAll(_eventsList);
-//
-//   List getEventForDay(DateTime day) {
-//     return _events[day] ?? [];
-//   }
-//
-//   Future<void> fetchEventCalender() async {
-//     selectedDay = _focusedDay;
-//     _eventsList = {
-//       DateTime.now().subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-//       DateTime.now(): ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-//       DateTime.now().add(Duration(days: 1)): [
-//         'Event A8',
-//         'Event B8',
-//         'Event C8',
-//         'Event D8'
-//       ],
-//       DateTime.now().add(Duration(days: 3)):
-//           Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-//       DateTime.now().add(Duration(days: 7)): [
-//         'Event A10',
-//         'Event B10',
-//         'Event C10'
-//       ],
-//       DateTime.now().add(Duration(days: 11)): ['Event A11', 'Event B11'],
-//       DateTime.now().add(Duration(days: 17)): [
-//         'Event A12',
-//         'Event B12',
-//         'Event C12',
-//         'Event D12'
-//       ],
-//       DateTime.now().add(Duration(days: 22)): ['Event A13', 'Event B13'],
-//       DateTime.now().add(Duration(days: 26)): [
-//         'Event A14',
-//         'Event B14',
-//         'Event C14'
-//       ],
-//     };
-//     notifyListeners();
-//   }
-// }
+import 'dart:collection';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../domain/events.dart';
+import 'package:flutter/cupertino.dart';
+
+class CalenderModel extends ChangeNotifier {
+  List<Events> events = [];
+
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+
+  //map <key, value>
+  Map<DateTime, List> eventsList = {};
+
+  bool isLoading = false;
+
+  DateTime focusedDay = DateTime.now();
+  late DateTime selectedDay;
+
+  void setDayCalender(selectedDay, focusedDay) {
+    this.selectedDay = selectedDay;
+    this.focusedDay = focusedDay;
+    notifyListeners();
+  }
+
+  Future<void> fetchEvents() async {
+    // Firestoreからコレクション'events'(QuerySnapshot)を取得してdocsに代入。
+    final docs = await FirebaseFirestore.instance
+        .collection('event')
+        .orderBy('timestamp', descending: true)
+        .get();
+    // getter docs: docs(List<QueryDocumentSnapshot<T>>型)のドキュメント全てをリストにして取り出す。
+    // map(): Listの各要素をBookに変換
+    // toList(): Map()から返ってきたIterable→Listに変換する。
+    final events = docs.docs.map((doc) => Events(doc)).toList();
+    this.events = events;
+    print(events);
+    notifyListeners();
+  }
+
+  Future<void> fetchEventsCalender() async {
+    int getHashCode(DateTime key) {
+      return key.day * 1000000 + key.month * 10000 + key.year;
+    }
+
+    // Firestoreからコレクション'events'(QuerySnapshot)を取得してdocsに代入。
+    final docs = await FirebaseFirestore.instance
+        .collection('event')
+        .orderBy('timestamp', descending: true)
+        .get();
+    // getter docs: docs(List<QueryDocumentSnapshot<T>>型)のドキュメント全てをリストにして取り出す。
+    // map(): Listの各要素をBookに変換
+    // toList(): Map()から返ってきたIterable→Listに変換する。
+    final events = docs.docs.map((doc) => Events(doc)).toList();
+    this.events = events;
+
+    // eventsList[DateTime.utc(2022, 7, 16)] = ['RF JAM'];
+    eventsList[DateTime.utc(2022, 05, 28)]?.addAll(['ジョニー鉄パイプ']);
+    for (int i = 0; i < events.length; i++) {
+      int year = int.parse(events[i].date.toString().substring(0, 4));
+      int month = int.parse(events[i].date.toString().substring(5, 7));
+      int day = int.parse(events[i].date.toString().substring(8, 10));
+      if (eventsList.containsKey(DateTime.utc(year, month, day))) {
+        eventsList[DateTime.utc(year, month, day)]
+            ?.add(events[i].title.toString());
+      } else {
+        eventsList[DateTime.utc(year, month, day)] = [
+          events[i].title.toString()
+        ];
+      }
+      print(eventsList);
+    }
+
+    notifyListeners();
+  }
+
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
+  set currentIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+}

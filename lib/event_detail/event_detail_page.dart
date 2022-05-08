@@ -1,34 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:plantapp2/entry/entry_page.dart';
 import 'package:provider/provider.dart';
-import '../main/main_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../entrylist/entorylist_page.dart';
+import 'event_detail_model.dart';
 
 class EventDetail extends StatelessWidget {
-  // final docRef = FirebaseFirestore.instance.doc('date');
   EventDetail(this.eventNum);
   int eventNum;
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('event')
-        .doc('DEarDWxlkm6lkrmAvNZs')
-        .get()
-        .then((ref) {
-      print(ref.get("date"));
-    });
-
-    return ChangeNotifierProvider<MainModel>(
+    return ChangeNotifierProvider<EventDetailModel>(
       // createでfetchBooks()も呼び出すようにしておく。
-      create: (_) => MainModel()..fetchEvents(),
+      create: (_) => EventDetailModel()..fetchEvents(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('詳細'),
         ),
         body: Center(
-          child: Consumer<MainModel>(builder: (context, model, child) {
+          child: Consumer<EventDetailModel>(builder: (context, model, child) {
             final events = model.events;
             return SingleChildScrollView(
               child: Column(children: [
@@ -41,20 +33,184 @@ class EventDetail extends StatelessWidget {
                         )
                       : Image.asset('assets/images/noimage.png'),
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  events[eventNum].title.toString(),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
                 ),
-                const SizedBox(height: 10),
                 Text(
-                  events[eventNum].date.toString(),
+                  'イベント名',
+                  style: TextStyle(color: Colors.white70),
                 ),
-                const SizedBox(height: 10),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    events[eventNum].title.toString(),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  'ジャンル',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    events[eventNum].eventGenre.toString(),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  '日程',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    events[eventNum].date.toString(),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  '場所名',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    events[eventNum].eventPlace.toString(),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  '住所',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: TextButton(
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Text("GoogleMapへ移動しますか？"),
+                            content: null,
+                            actions: <Widget>[
+                              // ボタン領域
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              TextButton(
+                                  child: Text("OK"),
+                                  onPressed: () async {
+                                    List<Location> locations =
+                                        await locationFromAddress(
+                                      events[eventNum].eventAddress.toString(),
+                                    );
+                                    print(locations.first.latitude);
+                                    print(locations.first.longitude);
+                                    final url =
+                                        'https://www.google.com/maps/search/?api=1&query=${locations.first.latitude},${locations.first.longitude}';
+                                    launch(url, forceSafariVC: false);
+                                  }),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      events[eventNum].eventAddress.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  '参加料金',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    events[eventNum].eventPrice.toString(),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  '詳細',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     events[eventNum].detail.toString(),
                   ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 const SizedBox(height: 10),
                 TextButton(

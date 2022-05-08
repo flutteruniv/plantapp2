@@ -8,16 +8,28 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 
 class EditEventModel extends ChangeNotifier {
-  EditEventModel(title, date, detail, url, id) {
+  EditEventModel(title, eventCategory, eventGenre, date, eventPlace,
+      eventAddress, eventPrice, detail, id, url) {
     titleEditingController.text = title!;
-    dateEditingController.text = date.toString();
-    detailEditingController.text = detail.toString();
+    dateEditingController.text = date;
+    detailEditingController.text = detail;
+    categoryPickerEditingController.text = eventCategory;
+    genrePickerEditingController.text = eventGenre;
+    eventPlaceEditingController.text = eventPlace;
+    eventAddressEditingController.text = eventAddress;
+    eventPriceEditingController.text = eventPrice;
     imgURL = url;
     documentId = id;
+    notifyListeners();
   }
 
   String? title;
   String? date;
+  String? eventCategory;
+  String? eventGenre;
+  String? eventAddress;
+  String? eventPlace;
+  String? eventPrice;
   String? detail;
   String? imgURL;
   String? documentId;
@@ -29,6 +41,12 @@ class EditEventModel extends ChangeNotifier {
   final titleEditingController = TextEditingController();
   final dateEditingController = TextEditingController();
   final detailEditingController = TextEditingController();
+  final eventPlaceEditingController = TextEditingController();
+  final eventAddressEditingController = TextEditingController();
+  final eventPriceEditingController = TextEditingController();
+
+  final genrePickerEditingController = TextEditingController();
+  final categoryPickerEditingController = TextEditingController();
 
   final picker = ImagePicker();
 
@@ -81,6 +99,15 @@ class EditEventModel extends ChangeNotifier {
   }
 
   Future updateEvent() async {
+    if (titleEditingController.text == "") {
+      throw 'イベントのタイトルが空です。';
+    }
+    if (dateEditingController.text.isEmpty) {
+      throw '日程が空です。';
+    }
+    if (detailEditingController.text.isEmpty) {
+      throw '詳細が空です。';
+    }
     print(documentId);
     if (imageFile != null) {
       final doc = FirebaseFirestore.instance.collection('event').doc();
@@ -90,6 +117,12 @@ class EditEventModel extends ChangeNotifier {
           .putFile(imageFile!);
       imgURL = await task.ref.getDownloadURL();
     }
+    eventCategory = categoryPickerEditingController.text;
+    eventGenre = genrePickerEditingController.text;
+
+    eventPlace = eventPlaceEditingController.text;
+    eventAddress = eventAddressEditingController.text;
+    eventPrice = eventPriceEditingController.text;
 
     this.title = titleEditingController.text;
     this.date = dateEditingController.text;
@@ -102,6 +135,11 @@ class EditEventModel extends ChangeNotifier {
       'date': date,
       'detail': detail,
       'imgURL': imgURL,
+      'eventCategory': eventCategory,
+      'eventGenre': eventGenre,
+      'eventPlace': eventPlace,
+      'eventAddress': eventAddress,
+      'eventPrice': eventPrice,
     });
   }
 

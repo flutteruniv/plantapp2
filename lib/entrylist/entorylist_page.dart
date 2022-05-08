@@ -17,7 +17,7 @@ class EntoryList extends StatelessWidget {
       create: (_) => EntoryListModel(id)..fetchEntryList(eventTitle.toString()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('エントリーリスト${eventTitle}'),
+          title: Text('エントリーリスト'),
         ),
         body: Center(
           child: Consumer<EntoryListModel>(builder: (context, model, child) {

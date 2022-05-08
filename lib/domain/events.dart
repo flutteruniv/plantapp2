@@ -6,11 +6,23 @@ class Events {
   String? date;
   String? imgURL;
   String? detail;
+
+  String? eventPlace;
+  String? eventAddress;
+  String? eventCategory;
+  String? eventPrice;
+  String? eventGenre;
+
   // String? eventID;
 
   Events(DocumentSnapshot doc) {
     eventId = doc.id;
     title = doc['title'];
+    eventPlace = doc['eventPlace'];
+    eventAddress = doc['eventAddress'];
+    eventCategory = doc['eventCategory'];
+    eventPrice = doc['eventPrice'];
+    eventGenre = doc['eventGenre'];
     date = doc['date'];
     imgURL = doc['imgURL'];
     detail = doc['detail'];
@@ -20,16 +32,25 @@ class Events {
 
 class HostEntryList {
   String? eventId;
-  String? uid;
   String? title;
   String? date;
   String? imgURL;
   String? detail;
 
+  String? eventPlace;
+  String? eventAddress;
+  String? eventCategory;
+  String? eventPrice;
+  String? eventGenre;
+
   HostEntryList(DocumentSnapshot doc) {
     eventId = doc.id;
-    uid = doc['uid'];
     title = doc['title'];
+    eventPlace = doc['eventPlace'];
+    eventAddress = doc['eventAddress'];
+    eventCategory = doc['eventCategory'];
+    eventPrice = doc['eventPrice'];
+    eventGenre = doc['eventGenre'];
     date = doc['date'];
     imgURL = doc['imgURL'];
     detail = doc['detail'];

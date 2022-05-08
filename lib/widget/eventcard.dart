@@ -15,17 +15,21 @@ class EventCard extends StatelessWidget {
         width: 350,
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(36),
-                topRight: Radius.circular(36),
+            Container(
+              height: 250,
+              width: 350,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+                child: imgURL != null || imgURL == ""
+                    ? Image.network(
+                        imgURL!,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset('assets/images/noimage.png'),
               ),
-              child: imgURL != null || imgURL == ""
-                  ? Image.network(
-                      imgURL!,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset('assets/images/noimage.png'),
             ),
             Container(
               width: double.infinity,

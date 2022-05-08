@@ -19,14 +19,6 @@ class RootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('event')
-        .doc('DEarDWxlkm6lkrmAvNZs')
-        .get()
-        .then((ref) {
-      print(ref.get("date"));
-    });
-
     return ChangeNotifierProvider<MainModel>(
       // createでfetchBooks()も呼び出すようにしておく。
       create: (_) => MainModel()..fetchEvents(),
@@ -63,7 +55,6 @@ class RootPage extends StatelessWidget {
                     } else {
                       print('ログインしていない');
                     }
-                    print(index);
                     model.currentIndex = index;
                     currentIndex = model.currentIndex;
                   }),

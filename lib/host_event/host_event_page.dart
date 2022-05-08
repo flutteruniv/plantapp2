@@ -28,16 +28,12 @@ class HostEventPage extends StatelessWidget {
                       subtitle: Text(hostEntryList[i].date.toString()),
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditEventPage(
-                                hostEntryList[i].title,
-                                hostEntryList[i].date,
-                                hostEntryList[i].detail,
-                                hostEntryList[i].imgURL,
-                                hostEntryList[i].eventId),
-                          ),
-                        );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditEventPage(
+                                hostEntryList[i],
+                              ),
+                            ));
                       },
                     ),
                   ),

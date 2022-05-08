@@ -14,21 +14,21 @@ class ProfilePage extends StatelessWidget {
       create: (_) => ProfilePageModel()..fetchUser(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('プロフィール'),
+          title: const Text('プロフィール'),
         ),
         endDrawer: Consumer<ProfilePageModel>(builder: (context, model, child) {
           return SafeArea(
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20)),
+              borderRadius: const BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  bottomLeft: const Radius.circular(20)),
               child: Drawer(
                 child: ListView(
                   children: <Widget>[
-                    header(),
+                    const header(),
                     ListTile(
-                      title: Text("エントリー済みイベント"),
-                      trailing: Icon(Icons.arrow_forward),
+                      title: const Text("エントリー済みイベント"),
+                      trailing: const Icon(Icons.arrow_forward),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -39,8 +39,8 @@ class ProfilePage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text("イベントの編集"),
-                      trailing: Icon(Icons.arrow_forward),
+                      title: const Text("イベントの編集"),
+                      trailing: const Icon(Icons.arrow_forward),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -51,23 +51,23 @@ class ProfilePage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text("ログアウト"),
-                      trailing: Icon(Icons.arrow_forward),
+                      title: const Text("ログアウト"),
+                      trailing: const Icon(Icons.arrow_forward),
                       onTap: () async {
                         showDialog(
                           context: context,
                           builder: (_) {
                             return AlertDialog(
-                              title: Text("ログアウトしますか？"),
+                              title: const Text("ログアウトしますか？"),
                               content: null,
                               actions: <Widget>[
                                 // ボタン領域
                                 TextButton(
-                                  child: Text("戻る"),
+                                  child: const Text("戻る"),
                                   onPressed: () => Navigator.pop(context),
                                 ),
                                 TextButton(
-                                    child: Text("ログアウトする"),
+                                    child: const Text("ログアウトする"),
                                     onPressed: () async {
                                       model.startLoading();
                                       try {
@@ -79,15 +79,23 @@ class ProfilePage extends StatelessWidget {
                                                     const LoginPage()),
                                             (_) => false);
                                         final snackBar = SnackBar(
-                                          backgroundColor: Colors.green,
-                                          content: Text(model.infoText),
+                                          backgroundColor: Colors.red,
+                                          content: Text(
+                                            model.infoText,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
                                         );
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                       } catch (e) {
                                         final snackBar = SnackBar(
                                             backgroundColor: Colors.red,
-                                            content: Text(e.toString()));
+                                            content: Text(
+                                              e.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ));
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -128,16 +136,16 @@ class ProfilePage extends StatelessWidget {
                         context: context,
                         builder: (_) {
                           return AlertDialog(
-                            title: Text("プロフィールを編集しますか？"),
+                            title: const Text("プロフィールを編集しますか？"),
                             content: null,
                             actions: <Widget>[
                               // ボタン領域
                               TextButton(
-                                child: Text("戻る"),
+                                child: const Text("戻る"),
                                 onPressed: () => Navigator.pop(context),
                               ),
                               TextButton(
-                                  child: Text("編集する"),
+                                  child: const Text("編集する"),
                                   onPressed: () {
                                     Navigator.push(
                                       context,
@@ -155,13 +163,13 @@ class ProfilePage extends StatelessWidget {
                         },
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'プロフィールを編集する',
                       style: TextStyle(color: Colors.teal),
                     ),
                   ),
                   Text(
-                    model.username ?? 'ユーザ名なし',
+                    model.username ?? '',
                     style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -169,16 +177,20 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    model.rep ?? 'レペゼンなし',
-                    style: TextStyle(
+                    model.rep == null || model.rep == 'null'
+                        ? 'レペゼンなし'
+                        : model.rep.toString(),
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.white70,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    model.genre ?? 'ジャンルなし',
-                    style: TextStyle(
+                    model.genre == null || model.genre == 'null'
+                        ? 'ジャンルなし'
+                        : model.genre.toString(),
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.white70,
                     ),
@@ -200,7 +212,7 @@ class header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       height: 60,
       child: DrawerHeader(
         child: Text(

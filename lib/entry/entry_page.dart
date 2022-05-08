@@ -21,75 +21,82 @@ class EntryPage extends StatelessWidget {
             child: Consumer<EntryModel>(builder: (context, model, child) {
           return Stack(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(eventTitle),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'エントリー名',
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(eventTitle),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'エントリー名',
+                      ),
+                      onChanged: (text) {
+                        model.user = text;
+                      },
                     ),
-                    onChanged: (text) {
-                      model.user = text;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'レペゼン',
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'レペゼン',
+                      ),
+                      onChanged: (text) {
+                        model.rep = text;
+                      },
                     ),
-                    onChanged: (text) {
-                      model.rep = text;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'ジャンル',
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'ジャンル',
+                      ),
+                      onChanged: (text) {
+                        model.genre = text;
+                      },
                     ),
-                    onChanged: (text) {
-                      model.genre = text;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.teal),
+                    const SizedBox(height: 20),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.teal),
+                      ),
+                      //エラーキャッチ
+                      onPressed: () async {
+                        try {
+                          model.startLoading();
+                          await model.addEntry(eventTitle, eventDate);
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                          final snackBar = SnackBar(
+                            backgroundColor: Colors.teal,
+                            content: Text(
+                              'エントリーしました。',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } catch (e) {
+                          final snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              e.toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } finally {
+                          model.endLoading();
+                        }
+                      },
+                      child: Text(
+                        "エントリー",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    //エラーキャッチ
-                    onPressed: () async {
-                      try {
-                        model.startLoading();
-                        await model.addEntry(eventTitle, eventDate);
-                        final snackBar = SnackBar(
-                          backgroundColor: Colors.green,
-                          content: Text('エントリーしました。'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } catch (e) {
-                        final snackBar = SnackBar(
-                          backgroundColor: Colors.red,
-                          content: Text(
-                            e.toString(),
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } finally {
-                        model.endLoading();
-                      }
-                    },
-                    child: Text(
-                      "エントリー",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               //isLoadingがtrueの時だけ動く
               if (model.isLoading)

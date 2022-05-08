@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -10,11 +11,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AddEventModel extends ChangeNotifier {
   String? title;
   String? date;
+  String? eventCategory;
+  String? eventGenre;
+  String? eventAddress;
+  String? eventPlace;
+  String? eventPrice;
+
   String? detail;
   File? imageFile;
   bool isLoading = false;
   final timestamp = DateTime.now();
   final textEditingController = TextEditingController();
+  final genrePickerEditingController = TextEditingController();
+  final categoryPickerEditingController = TextEditingController();
+
+  var currentIndex = 0;
 
   final picker = ImagePicker();
 
@@ -25,6 +36,11 @@ class AddEventModel extends ChangeNotifier {
 
   void endLoading() {
     isLoading = false;
+    notifyListeners();
+  }
+
+  void setIndex(index) {
+    currentIndex = index;
     notifyListeners();
   }
 
@@ -49,29 +65,35 @@ class AddEventModel extends ChangeNotifier {
   }
 
   Future addEvent() async {
-    // RandomID生成
-    //   String eventID([int length = 32]) {
-    //     const charset =
-    //         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    //     final random = Random.secure();
-    //     final randomStr =
-    //         List.generate(length, (_) => charset[random.nextInt(charset.length)])
-    //             .join();
-    //     return randomStr;
-    //   }
-    //   print(eventID());
-    //ヌルチェック 空だったらFireStoreに入れたくない
+    eventCategory = categoryPickerEditingController.text;
+    eventGenre = genrePickerEditingController.text;
 
     //「title=""」も「date!.isEmpt」yも一緒の意味
     if (title == null || title == "") {
       throw 'イベントのタイトルが空です。';
     }
-    if (date == null || date!.isEmpty) {
+    if (eventCategory == null || eventCategory!.isEmpty) {
       throw '日程が空です。';
+    }
+    if (eventGenre == null || eventGenre!.isEmpty) {
+      throw 'ジャンルが空です。';
+    }
+    if (date == null || date == "") {
+      throw '日程が空です。';
+    }
+    if (eventPlace == null || eventPlace!.isEmpty) {
+      throw '開催場所が空です。';
+    }
+    if (eventAddress == null || eventAddress!.isEmpty) {
+      throw '住所が空です。';
+    }
+    if (eventPrice == null || eventPrice!.isEmpty) {
+      throw '参加料金が空です。';
     }
     if (detail == null || detail!.isEmpty) {
       throw '詳細が空です。';
     }
+
     final uid = await FirebaseAuth.instance.currentUser!.uid;
 
     final doc = FirebaseFirestore.instance.collection('event').doc();
@@ -90,6 +112,11 @@ class AddEventModel extends ChangeNotifier {
     await doc.set({
       'eventID': doc.id,
       'title': title,
+      'eventCategory': eventCategory,
+      'eventGenre': eventGenre,
+      'eventPlace': eventPlace,
+      'eventAddress': eventAddress,
+      'eventPrice': eventPrice,
       'date': date,
       'detail': detail,
       'imgURL': imgURL,

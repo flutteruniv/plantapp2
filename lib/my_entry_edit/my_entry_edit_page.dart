@@ -68,26 +68,55 @@ class MyEntryEditPage extends StatelessWidget {
                       ),
                       //エラーキャッチ
                       onPressed: () async {
-                        try {
-                          model.startLoading();
-                          await model.updateEntry();
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          final snackBar = SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text('エントリー内容をを更新しました。'),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              e.toString(),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } finally {
-                          model.endLoading();
-                        }
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: Text("エントリー内容を更新しますか？"),
+                              content: null,
+                              actions: <Widget>[
+                                // ボタン領域
+                                TextButton(
+                                  child: Text("Cancel"),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () async {
+                                      try {
+                                        model.startLoading();
+                                        await model.updateEntry();
+                                        Navigator.popUntil(
+                                            context, (route) => route.isFirst);
+                                        final snackBar = SnackBar(
+                                          backgroundColor: Colors.green,
+                                          content: Text(
+                                            'エントリー内容を更新しました。',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } catch (e) {
+                                        final snackBar = SnackBar(
+                                          backgroundColor: Colors.red,
+                                          content: Text(
+                                            e.toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } finally {
+                                        model.endLoading();
+                                      }
+                                    }),
+                              ],
+                            );
+                          },
+                        );
                       },
                       child: Text(
                         "エントリー内容更新",
@@ -118,8 +147,18 @@ class MyEntryEditPage extends StatelessWidget {
                                 TextButton(
                                     child: Text("OK"),
                                     onPressed: () {
+                                      final snackBar = SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          'エントリーをキャンセルしました。',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
                                       model.deleteEntry();
-                                      Navigator.pop(context);
+                                      Navigator.popUntil(
+                                          context, (route) => route.isFirst);
                                     }),
                               ],
                             );

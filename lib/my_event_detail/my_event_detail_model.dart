@@ -11,6 +11,12 @@ class MyEventDetailModel extends ChangeNotifier {
   String? imgURL;
   String? eventId;
 
+  String? eventAddress;
+  String? eventCategory;
+  String? eventGenre;
+  String? eventPlace;
+  String? eventPrice;
+
   bool isLoading = false;
 
   void fetchMyEventDetail() async {
@@ -21,6 +27,12 @@ class MyEventDetailModel extends ChangeNotifier {
     this.date = data?['date'];
     this.detail = data?['detail'];
     this.imgURL = data?['imgURL'];
+
+    this.eventAddress = data?['eventAddress'];
+    this.eventCategory = data?['eventCategory'];
+    this.eventGenre = data?['eventGenre'];
+    this.eventPlace = data?['eventPlace'];
+    this.eventPrice = data?['eventPrice'];
 
     notifyListeners();
   }
